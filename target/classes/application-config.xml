@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+
+	<!-- 주석 -->
+	<bean id="helloService" class="com.sample.myapp.HelloService" />
+	<!-- class에 적힌 것은 HelloService helloService = new HelloService(); 와 같은 의미 -->
+
+<!-- 	<bean id="helloController" p:helloService-ref="helloService"
+		class="com.sample.myapp.HelloController">
+		<property name="helloService" ref="helloService" />
+		<constructor-arg ref="helloService"/>
+		HelloController helloController = new HelloController(helloService) 
+			와 같은 의미
+	</bean> -->
+	
+	
+	<!-- 컬렉션 타입 의존성 설정 -->
+	<bean id="personBean" class="com.sample.myapp.Person">
+		<!-- 이 상태는 singletone 상태고, prototype으로 설정해주려면 위의 bean 속성에 scope="prototype" 
+			추가 -->
+		<property name="name" value="Eunjong" />
+		<property name="age" value="28" />
+	</bean>
+
+	<bean id="customer" class="com.sample.myapp.Customer">
+		<property name="lists">
+			<list>
+				<value>1</value>
+				<ref bean="personBean" />
+				<bean class="com.sample.myapp.Person">
+					<property name="name" value="SilverBell" />
+					<property name="age" value="100" />
+				</bean>
+			</list>
+		</property>
+
+		<property name="sets">
+			<set>
+				<value>2</value>
+				<ref bean="personBean" />
+				<bean class="com.sample.myapp.Person">
+					<property name="name" value="GoldenBell" />
+					<property name="age" value="1" />
+				</bean>
+			</set>
+		</property>
+
+		<property name="maps">
+			<map>
+				<entry key="Key1" value="3" />
+				<entry key="Key2" value-ref="personBean" />
+				<entry key="Key3">
+					<bean class="com.sample.myapp.Person">
+						<property name="name" value="Choi" />
+						<property name="age" value="16" />
+					</bean>
+				</entry>
+			</map>
+		</property>
+
+		<property name="props">
+			<props>
+				<prop key="webmaster">webmaster@coderby.com</prop>
+				<prop key="support">support@coderby.com</prop>
+			</props>
+		</property>
+	</bean>	
+	
+	<!-- 아노테이션을 이용한 의존성 주입 -->
+	<context:component-scan base-package="com.sample.myapp"/>
+</beans>
