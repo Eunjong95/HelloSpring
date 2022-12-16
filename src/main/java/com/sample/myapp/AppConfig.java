@@ -11,7 +11,7 @@ import org.springframework.context.annotation.ImportResource;
 @ComponentScan(basePackages = { "com.sample.myapp" })
 @ImportResource(value = { "classpath:application-config.xml" })
 public class AppConfig {
-	//Autowired 안하면 의존성 주입이 안됨
+	
 	@Autowired 
 	IHelloService helloService;
 
@@ -20,9 +20,13 @@ public class AppConfig {
 		return new HelloService();
 	}
 
-	@Bean
+	//@Bean
 	HelloController helloController() {
-		HelloController controller = new HelloController(helloService);
+		HelloController controller = new HelloController(helloService); 
+		//여기서 helloService()를 쓰면 위에 생성된 빈과 중복되어서(빈이름=메소드이름) 쓰기 불가능함 
+		//그리고 helloService를 가져올거면 어딘가에서 helloService에 의존성 주입을 해주는 autowired가 필요함
 		return controller;
 	}
+	
+	
 }
